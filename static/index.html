@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PoseAnimator.com - AI-Powered Real-Time Pose-to-Animation Transfer</title>
+    <meta name="description" content="Create stunning animated characters from your webcam in real-time using AI pose detection">
+  <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #0E0F1A 0%, #1a1b2e 100%);
+            color: #e5e7eb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 72px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00C2FF 0%, #8A2BE2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #9ca3af;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        
+        .description {
+            font-size: 18px;
+            color: #d1d5db;
+            line-height: 1.8;
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(0, 194, 255, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+            border: 1px solid rgba(0, 194, 255, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 194, 255, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00C2FF;
+            margin-bottom: 10px;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+        
+        .launch-container {
+            background: linear-gradient(135deg, rgba(0, 194, 255, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
+            border: 1px solid rgba(0, 194, 255, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .launch-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 194, 255, 0.2);
+        }
+        
+        .launch-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .launch-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00C2FF;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .launch-description {
+            font-size: 16px;
+            color: #9ca3af;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .launch-button {
+            background: linear-gradient(135deg, #00C2FF 0%, #8A2BE2 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 194, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .launch-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .launch-button:hover:not(:disabled)::before {
+            left: 100%;
+        }
+        
+        .launch-button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 194, 255, 0.5);
+        }
+        
+        .launch-button:active:not(:disabled) {
+            transform: translateY(-1px);
+        }
+        
+        .launch-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 30px;
+            font-size: 18px;
+            color: #00FFB2;
+            font-weight: 600;
+            min-height: 30px;
+        }
+        
+        .status.error {
+            color: #FF4D4D;
+        }
+        
+        .status.loading {
+            color: #00C2FF;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.running {
+            background: #00FFB2;
+        }
+        
+        .status-indicator.stopped {
+            background: #FF4D4D;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .footer a {
+            color: #00C2FF;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 48px;
+            }
+            
+            .subtitle {
+                font-size: 20px;
+            }
+            
+            .description {
+                font-size: 16px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .launch-container {
+                padding: 30px 20px;
+            }
+            
+            .launch-icon {
+                font-size: 48px;
+            }
+            
+            .launch-title {
+                font-size: 24px;
+            }
+            
+            .launch-description {
+                font-size: 14px;
+            }
+            
+            .launch-button {
+                padding: 16px 40px;
+                font-size: 18px;
+            }
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .auto-launch-note {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 20px;
+        }
+    </style>
+  </head>
+<body>
+    <div class="container">
+        <h1 class="logo">PoseAnimator</h1>
+        <p class="subtitle">AI-Powered Real-Time Animation</p>
+        <p class="description">
+            Transform your movements into stunning animated characters in real-time using advanced AI pose detection. 
+            Simply turn on your webcam and watch your pose come to life!
+        </p>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎥</div>
+                <div class="feature-title">Live Capture</div>
+                <div class="feature-text">Real-time webcam processing with instant pose detection</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">AI Powered</div>
+                <div class="feature-text">Advanced MediaPipe pose estimation technology</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-title">Multiple Styles</div>
+                <div class="feature-text">Cartoon, Stick Figure, and 3D Avatar modes</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Instant Results</div>
+                <div class="feature-text">High-performance rendering with smooth animations</div>
+            </div>
+        </div>
+        
+        <div class="launch-container">
+            <div class="launch-icon">🚀</div>
+            <div class="launch-title">Ready to Animate?</div>
+            <div class="launch-description">
+                Click the button below to launch Pose Animator in this browser window. The app runs directly in your browser - no separate window needed!
+      </div>
+            <button class="launch-button" id="launchBtn" onclick="launchApp()">
+                ▶ Start Animation
+            </button>
+      <div id="status" class="status"></div>
+            <p class="auto-launch-note">
+                💡 The app opens in this browser window - works on any device!
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Built with ❤️ using Python, MediaPipe, and OpenCV</p>
+            <p style="margin-top: 10px;">
+                <a href="https://github.com" target="_blank">View Source</a> | 
+                <a href="#" onclick="window.open('http://localhost:8000/?auto=1', '_blank'); return false;">Direct Link</a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        let statusElement = document.getElementById('status');
+        let launchBtn = document.getElementById('launchBtn');
+        let launchCount = 0;
+        
+        async function launchApp() {
+            launchBtn.disabled = true;
+            statusElement.textContent = '';
+            statusElement.className = 'status loading';
+            statusElement.innerHTML = '<span class="loading-spinner"></span>Launching Pose Animator...';
+            
+            try {
+                const response = await fetch('/launch');
+                const data = await response.json();
+                
+                if (data.ok && data.redirect) {
+                    // Redirect to web version in same window
+                    window.location.href = data.redirect;
+                } else if (data.ok) {
+                    statusElement.className = 'status';
+                    statusElement.textContent = '✓ ' + (data.message || 'Opening web version...');
+                    checkStatus();
+                } else {
+                    statusElement.className = 'status error';
+                    statusElement.textContent = '✗ Error: ' + (data.error || 'Failed to launch');
+                    launchBtn.disabled = false;
+                }
+            } catch (error) {
+                statusElement.className = 'status error';
+                statusElement.textContent = '✗ Connection error: ' + error.message;
+                launchBtn.disabled = false;
+            }
+        }
+        
+        async function checkStatus() {
+            try {
+                const response = await fetch('/status');
+                const data = await response.json();
+                const indicator = document.getElementById('statusIndicator');
+                
+                if (data.running) {
+                    if (!indicator) {
+                        const statusText = statusElement.textContent;
+                        statusElement.innerHTML = '<span class="status-indicator running"></span>' + statusText;
+                    } else {
+                        indicator.className = 'status-indicator running';
+                    }
+                } else {
+                    if (!indicator) {
+                        const statusText = statusElement.textContent;
+                        statusElement.innerHTML = '<span class="status-indicator stopped"></span>' + statusText;
+                    } else {
+                        indicator.className = 'status-indicator stopped';
+                    }
+                }
+            } catch (error) {
+                // Silent fail for status check
+            }
+        }
+        
+        // Auto-launch on page load (only once)
+        window.addEventListener('DOMContentLoaded', () => {
+            // Check if auto-launch is disabled via URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('auto') === '0') {
+                return;
+            }
+            
+            // Auto-launch after a short delay
+            setTimeout(() => {
+                if (launchCount === 0) {
+                    launchCount++;
+                    launchApp();
+                }
+            }, 1000);
+        });
+        
+        // Check status every 3 seconds
+        setInterval(checkStatus, 3000);
+    </script>
+</body>
+</html>
