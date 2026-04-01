@@ -97,11 +97,11 @@ const LandingPage = ({ onLaunch, onSignIn, onSignUp }) => {
                             <div className="flex flex-wrap items-center gap-4 pt-2">
                                 <button 
                                     className="bg-[#6366f1] text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:shadow-[0_15px_30px_rgba(99,102,241,0.25)] transition-all hover:-translate-y-0.5 active:scale-95"
-                                    onClick={onSignUp}
+                                    onClick={onLaunch}
                                 >
-                                    Get Started Free
+                                    Start Animating
                                 </button>
-                                <button className="px-8 py-3.5 rounded-xl font-bold text-sm text-slate-800 border-2 border-slate-100 hover:border-slate-200 hover:bg-slate-50 transition-all active:scale-95">
+                                <button className="px-8 py-3.5 rounded-xl font-bold text-sm text-slate-700 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all hover:-translate-y-0.5 active:scale-95">
                                     View Showcase
                                 </button>
                             </div>

@@ -29,7 +29,7 @@ function App() {
     <div className="min-h-screen bg-surface">
       {currentPage === 'landing' && (
         <LandingPage 
-          onLaunch={() => setCurrentPage(user ? 'dashboard' : 'signin')} 
+          onLaunch={() => setCurrentPage('dashboard')} 
           onSignIn={() => setCurrentPage('signin')}
           onSignUp={() => setCurrentPage('signup')}
         />
