@@ -1,0 +1,296 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root {
+    /* Color Palette - Kinetic Precision Light (Strict Hex Codes) */
+    --background: #F8FAFC;
+    --on-background: #0F172A;
+    --surface: #FFFFFF;
+    --surface-container-low: #F8FAFC;
+    --surface-container: #F1F5F9;
+    --surface-container-high: #E2E8F0;
+    --surface-container-highest: #CBD5E1;
+    --surface-bright: #FFFFFF;
+    --surface-dim: #E2E8F0;
+    
+    --primary: #3D5AFE;
+    --primary-container: #E0E7FF;
+    --on-primary-container: #3730A3;
+    --secondary: #7C4DFF;
+    --secondary-dim: #6200EA;
+    --tertiary: #F472B6;
+    
+    --outline: #CBD5E1;
+    --outline-variant: #E2E8F0;
+    --on-surface-variant: #475569;
+
+    /* Spacing Scale (2x) */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+
+    --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--on-background);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Typography Editorial Authority */
+h1, h2, h3, .display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em; /* Strict Display Spacing */
+}
+
+.display-lg { font-size: 3.5rem; line-height: 1; }
+.headline-lg { font-size: 2rem; line-height: 1.2; font-weight: 700; }
+.body-md { font-size: 0.875rem; line-height: 1.6; }
+.label-md { font-size: 0.875rem; font-weight: 500; color: var(--on-surface-variant); opacity: 0.6; }
+
+/* The No-Line Rule */
+.divider-free section { border: none !important; }
+
+/* Surface Hierarchy */
+.layer-1 { background-color: var(--surface); }
+.layer-2 { background-color: var(--surface-container-low); }
+.layer-3 { background-color: var(--surface-container-high); }
+
+/* Glass & Gradient Styles */
+.glass {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+.gradient-cta {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--on-primary-container);
+    border: none;
+    box-shadow: 0 4px 15px rgba(184, 159, 255, 0.2);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    border-radius: 0.75rem; /* Roundness Scale lg */
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-container);
+    color: var(--on-primary-container);
+    border: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); /* Inner glow rule */
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(172, 142, 255, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(69, 72, 79, 0.2); /* Ghost border fallback */
+    color: var(--secondary);
+}
+
+/* Modal/Slide panels rounded corners */
+.panel-right {
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: var(--space-4) 0;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--space-8);
+}
+
+.nav-link {
+    color: var(--on-surface-variant);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* Sections */
+.viewport-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-12);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.hero-img-container {
+    position: relative;
+    height: 600px;
+}
+
+.hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2rem;
+    mask-image: radial-gradient(circle, black 50%, transparent 100%);
+}
+
+.deco-pulse {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+    opacity: 0.3;
+    animation: pulse 4s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.5); opacity: 0.1; }
+}
+
+/* Studio Workspace */
+#studio-view {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: var(--background);
+    display: none;
+    flex-direction: column;
+}
+
+#studio-view.active { display: flex; }
+
+.studio-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--space-4);
+    padding: var(--space-4);
+}
+
+.studio-feed-grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--space-4);
+}
+
+.pane {
+    background: var(--surface-container-low);
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.pane-header {
+    padding: var(--space-3) var(--space-4);
+    background: rgba(255,255,255,0.03);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.pane-content {
+    flex: 1;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.studio-controls {
+    padding: var(--space-6);
+    background: var(--surface-container);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timeline-pill {
+    padding: 0.35rem 1rem;
+    border-radius: 2rem;
+    background: var(--surface-container-lowest);
+    color: var(--primary);
+    font-size: 0.75rem;
+}
+
+/* Gallery Archive */
+.archive-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    width: 100%;
+}
+
+.archive-item {
+    background: var(--surface-container-high);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+}
+
+.archive-item:hover { transform: translateY(-5px); }
+
+.archive-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}

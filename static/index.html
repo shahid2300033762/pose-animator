@@ -3,436 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PoseAnimator.com - AI-Powered Real-Time Pose-to-Animation Transfer</title>
-    <meta name="description" content="Create stunning animated characters from your webcam in real-time using AI pose detection">
-  <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #0E0F1A 0%, #1a1b2e 100%);
-            color: #e5e7eb;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 900px;
-            width: 100%;
-            text-align: center;
-        }
-        
-        .logo {
-            font-size: 72px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #00C2FF 0%, #8A2BE2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-        }
-        
-        .subtitle {
-            font-size: 24px;
-            color: #9ca3af;
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
-        
-        .description {
-            font-size: 18px;
-            color: #d1d5db;
-            line-height: 1.8;
-            margin-bottom: 50px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        
-        .feature-card {
-            background: linear-gradient(135deg, rgba(0, 194, 255, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
-            border: 1px solid rgba(0, 194, 255, 0.2);
-            border-radius: 16px;
-            padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 194, 255, 0.2);
-        }
-        
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-        
-        .feature-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #00C2FF;
-            margin-bottom: 10px;
-        }
-        
-        .feature-text {
-            font-size: 14px;
-            color: #9ca3af;
-            line-height: 1.6;
-        }
-        
-        .launch-container {
-            background: linear-gradient(135deg, rgba(0, 194, 255, 0.1) 0%, rgba(138, 43, 226, 0.1) 100%);
-            border: 1px solid rgba(0, 194, 255, 0.2);
-            border-radius: 16px;
-            padding: 40px;
-            margin-bottom: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .launch-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 194, 255, 0.2);
-        }
-        
-        .launch-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-        
-        .launch-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #00C2FF;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .launch-description {
-            font-size: 16px;
-            color: #9ca3af;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        .launch-button {
-            background: linear-gradient(135deg, #00C2FF 0%, #8A2BE2 100%);
-            color: white;
-            border: none;
-            padding: 18px 50px;
-            font-size: 20px;
-            font-weight: 700;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 194, 255, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .launch-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .launch-button:hover:not(:disabled)::before {
-            left: 100%;
-        }
-        
-        .launch-button:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 194, 255, 0.5);
-        }
-        
-        .launch-button:active:not(:disabled) {
-            transform: translateY(-1px);
-        }
-        
-        .launch-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .status {
-            margin-top: 30px;
-            font-size: 18px;
-            color: #00FFB2;
-            font-weight: 600;
-            min-height: 30px;
-        }
-        
-        .status.error {
-            color: #FF4D4D;
-        }
-        
-        .status.loading {
-            color: #00C2FF;
-        }
-        
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 10px;
-            animation: pulse 2s infinite;
-        }
-        
-        .status-indicator.running {
-            background: #00FFB2;
-        }
-        
-        .status-indicator.stopped {
-            background: #FF4D4D;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .footer {
-            margin-top: 50px;
-            font-size: 14px;
-            color: #6b7280;
-        }
-        
-        .footer a {
-            color: #00C2FF;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 48px;
-            }
-            
-            .subtitle {
-                font-size: 20px;
-            }
-            
-            .description {
-                font-size: 16px;
-            }
-            
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .launch-container {
-                padding: 30px 20px;
-            }
-            
-            .launch-icon {
-                font-size: 48px;
-            }
-            
-            .launch-title {
-                font-size: 24px;
-            }
-            
-            .launch-description {
-                font-size: 14px;
-            }
-            
-            .launch-button {
-                padding: 16px 40px;
-                font-size: 18px;
-            }
-        }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .auto-launch-note {
-            font-size: 14px;
-            color: #6b7280;
-            margin-top: 20px;
-        }
-    </style>
-  </head>
-<body>
-    <div class="container">
-        <h1 class="logo">PoseAnimator</h1>
-        <p class="subtitle">AI-Powered Real-Time Animation</p>
-        <p class="description">
-            Transform your movements into stunning animated characters in real-time using advanced AI pose detection. 
-            Simply turn on your webcam and watch your pose come to life!
-        </p>
-        
-        <div class="feature-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🎥</div>
-                <div class="feature-title">Live Capture</div>
-                <div class="feature-text">Real-time webcam processing with instant pose detection</div>
+    <title>PoseStudio | Kinetic Precision Motion</title>
+    <meta name="description" content="High-end motion studio for real-time pose animation.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/index.css">
+    
+    <!-- MediaPipe & TensorFlow.js CDNs -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+</head>
+<body class="divider-free">
+    <!-- Navigation Layer -->
+    <header class="glass">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; max-width: 1280px; margin: 0 auto; padding: 0 2rem;">
+            <div class="logo">
+                <div style="width: 24px; height: 24px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                    <div style="width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
+                </div>
+                <span>PoseStudio</span>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <div class="feature-title">AI Powered</div>
-                <div class="feature-text">Advanced MediaPipe pose estimation technology</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎨</div>
-                <div class="feature-title">Multiple Styles</div>
-                <div class="feature-text">Cartoon, Stick Figure, and 3D Avatar modes</div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <div class="feature-title">Instant Results</div>
-                <div class="feature-text">High-performance rendering with smooth animations</div>
+            <nav class="nav-links">
+                <a href="#hero" class="nav-link">Project</a>
+                <a href="#studio" class="nav-link">Studio</a>
+                <a href="#docs" class="nav-link">Docs</a>
+                <a href="#ecosystem" class="nav-link">Ecosystem</a>
+            </nav>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <span class="label-md" style="font-size: 0.75rem;">Sign In</span>
+                <button class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Download</button>
             </div>
         </div>
-        
-        <div class="launch-container">
-            <div class="launch-icon">🚀</div>
-            <div class="launch-title">Ready to Animate?</div>
-            <div class="launch-description">
-                Click the button below to launch Pose Animator in this browser window. The app runs directly in your browser - no separate window needed!
-      </div>
-            <button class="launch-button" id="launchBtn" onclick="launchApp()">
-                ▶ Start Animation
-            </button>
-      <div id="status" class="status"></div>
-            <p class="auto-launch-note">
-                💡 The app opens in this browser window - works on any device!
-            </p>
+    </header>
+
+    <main id="landing-page" style="overflow-y: scroll; scroll-snap-type: y mandatory; height: 100vh;">
+        <!-- Hero Section -->
+        <section id="hero" class="viewport-section layer-1" style="scroll-snap-align: start;">
+            <div class="hero-grid animate-fade">
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <span class="label-md" style="color: var(--primary); text-transform: uppercase; letter-spacing: 0.2em; opacity: 1; margin-bottom: 1rem;">2.0 ENGINE DESIGN</span>
+                    <h1 class="display-lg" style="margin-bottom: 2rem;">MOTION<br><span style="color: var(--primary);">REDEFINED.</span></h1>
+                    <p class="body-md" style="color: var(--on-surface-variant); max-width: 480px; margin-bottom: 3rem;">
+                        The professional order for high-fidelity pose animation. Transform dynamic visual data into fluid human performances with AI-driven studio standards.
+                    </p>
+                    <div style="display: flex; gap: 1.5rem;">
+                        <button id="launchActionBtn" class="btn btn-primary" onclick="launchApp()">Start Now</button>
+                        <button class="btn btn-secondary">View Showcase</button>
+                    </div>
+                </div>
+                <div class="hero-img-container">
+                    <div class="deco-pulse" style="top: 10%; right: 10%;"></div>
+                    <img src="/static/hero.png" class="hero-img" alt="Hero Character Representation">
+                    <div class="glass" style="position: absolute; bottom: 10%; left: -5%; padding: 1.5rem; border-radius: 1rem; border-left: 2px solid var(--secondary);">
+                        <div class="label-md" style="color: var(--secondary); opacity: 1; margin-bottom: 0.5rem;">REAL-TIME CORE</div>
+                        <div style="font-family: 'Space Grotesk'; font-size: 1.25rem;">Latency: 12ms</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Precision Workflow Section -->
+        <section id="workflow" class="viewport-section layer-2" style="scroll-snap-align: start;">
+            <div class="container" style="max-width: 1280px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: center;">
+                <div>
+                    <h2 class="headline-lg" style="margin-bottom: 2rem;">The Precision Workflow.</h2>
+                    <p class="body-md" style="color: var(--on-surface-variant); margin-bottom: 3rem;">
+                        Move from concept to motion faster than ever before. Our engine captures the subtle nuances of human performance with mathematical precision.
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="layer-3" style="padding: 2rem; border-radius: 1rem;">
+                            <span style="color: var(--primary); font-family: 'Space Grotesk';">01</span>
+                            <h3 style="margin: 1rem 0 0.5rem; font-size: 1.1rem;">Pose Synthesis</h3>
+                            <p class="label-md" style="line-height: 1.4;">Real-time capture of skeletal data point systems.</p>
+                        </div>
+                        <div class="layer-3" style="padding: 2rem; border-radius: 1rem;">
+                            <span style="color: var(--secondary); font-family: 'Space Grotesk';">02</span>
+                            <h3 style="margin: 1rem 0 0.5rem; font-size: 1.1rem;">Kinetic Mapping</h3>
+                            <p class="label-md" style="line-height: 1.4;">Direct translation of 2D coordinates to 3D bones.</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="position: relative;">
+                    <img src="/static/workflow.png" style="width: 100%; border-radius: 2rem; box-shadow: 0 40px 100px rgba(0,0,0,0.5);" alt="Workflow Visualization">
+                    <div style="position: absolute; top: -2rem; right: -2rem; width: 120px; height: 120px; background: rgba(0,227,253,0.1); border-radius: 50%; backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-bolt" style="color: var(--secondary); font-size: 2.5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Archive Section -->
+        <section id="gallery" class="viewport-section layer-1" style="scroll-snap-align: start; flex-direction: column; justify-content: center;">
+            <div class="container" style="max-width: 1280px; width: 100%;">
+                <div style="margin-bottom: 4rem;">
+                    <h2 class="display-lg"><span style="color: var(--secondary);">THE</span><br>ARCHIVE</h2>
+                    <p class="label-md" style="margin-top: 1rem;">A catalogue of high-performance human performance assets.</p>
+                </div>
+                <div class="archive-grid">
+                    <div class="archive-item">
+                        <img src="/static/archive.png" class="archive-img" alt="Cyber Monk">
+                        <div style="padding: 1.5rem;">
+                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Cyber Monk</h3>
+                            <span class="label-md">Kinetic_Study_04</span>
+                        </div>
+                    </div>
+                    <div class="archive-item">
+                        <img src="/static/archive.png" class="archive-img" style="filter: hue-rotate(90deg);" alt="Neon Knight">
+                        <div style="padding: 1.5rem;">
+                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Neon Knight</h3>
+                            <span class="label-md">Kinetic_Study_09</span>
+                        </div>
+                    </div>
+                    <div class="archive-item">
+                        <img src="/static/archive.png" class="archive-img" style="filter: hue-rotate(180deg);" alt="Tech Ronin">
+                        <div style="padding: 1.5rem;">
+                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Tech Ronin</h3>
+                            <span class="label-md">Kinetic_Study_12</span>
+                        </div>
+                    </div>
+                    <div class="archive-item">
+                        <img src="/static/archive.png" class="archive-img" style="filter: brightness(1.5) grayscale(1);" alt="Void Runner">
+                        <div style="padding: 1.5rem;">
+                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Void Runner</h3>
+                            <span class="label-md">Kinetic_Study_01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Studio Workspace View (Hidden Layer) -->
+    <div id="studio-view">
+        <div class="studio-header glass" style="padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--outline-variant);">
+            <div class="logo">
+                <span style="color: var(--primary);">●</span> Workspace Studio
+            </div>
+            <div style="display: flex; gap: 2rem; align-items: center;">
+                <div class="status-badge" style="background: rgba(0, 227, 253, 0.1); color: var(--secondary); padding: 0.4rem 1rem; border-radius: 2rem;">
+                    <span style="animation: pulse 2s infinite;">●</span> LIVE SYNC
+                </div>
+                <div class="status-badge" style="background: rgba(184, 159, 255, 0.1); color: var(--primary); padding: 0.4rem 1rem; border-radius: 2rem;">
+                    LATENCY: <span id="studioLatency">12ms</span>
+                </div>
+                <button class="btn btn-secondary" onclick="resetLauncher()" style="padding: 0.4rem 1rem; font-size: 0.75rem;">Terminate Session</button>
+            </div>
         </div>
-        
-        <div class="footer">
-            <p>Built with ❤️ using Python, MediaPipe, and OpenCV</p>
-            <p style="margin-top: 10px;">
-                <a href="https://github.com" target="_blank">View Source</a> | 
-                <a href="#" onclick="window.open('http://localhost:8000/?auto=1', '_blank'); return false;">Direct Link</a>
-            </p>
+
+        <div class="studio-main">
+            <div class="studio-feed-grid">
+                <div class="pane">
+                    <div class="pane-header">
+                        <span><i class="fa-solid fa-video"></i> Live Camera Input</span>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <div style="width: 8px; height: 8px; background: #00FFB2; border-radius: 50%;"></div> LR: <span id="fpsInput">0</span> FPS
+                        </div>
+                    </div>
+                    <div class="pane-content">
+                        <!-- Direct Video Input (Hidden) -->
+                        <video id="inputVideo" style="display: none;" playsinline></video>
+                        <!-- Detection Canvas -->
+                        <canvas id="inputCanvas" style="width: 100%; height: 100%; object-fit: contain;"></canvas>
+                        
+                        <div id="cameraPrompt" style="position: absolute; text-align: center; color: var(--on-surface-variant); opacity: 0.5;">
+                            <i class="fa-solid fa-camera-rotate" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>
+                            <p class="label-md">Waiting for Studio initialization...</p>
+                        </div>
+                        <div style="position: absolute; bottom: 1rem; left: 1rem; display: flex; gap: 0.5rem;">
+                            <span class="timeline-pill" style="background: var(--primary); color: #000;">RAW FEED</span>
+                            <span class="timeline-pill">SKELETON</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pane">
+                    <div class="pane-header">
+                        <span><i class="fa-solid fa-wand-magic-sparkles"></i> AI Stylized Output (Pix2Pix)</span>
+                        <div style="display: flex; gap: 0.5rem;">
+                             LR: <span id="fpsOutput">0</span> FPS
+                        </div>
+                    </div>
+                    <div class="pane-content">
+                        <!-- Stylized Output Canvas -->
+                        <canvas id="outputCanvas" style="width: 100%; height: 100%; object-fit: contain;"></canvas>
+                        
+                        <div style="position: absolute; bottom: 1rem; right: 1rem;">
+                            <span class="timeline-pill" style="background: var(--secondary); color: #000;">STYLIZATION ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+                <!-- Metrics Panel -->
+                <div class="layer-3" style="flex: 1; border-radius: 1.5rem; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <div class="label-md" style="font-size: 0.6rem; text-transform: uppercase;">Current Frame</div>
+                            <div style="font-size: 2rem; font-family: 'Space Grotesk';">14,209</div>
+                        </div>
+                        <div>
+                            <div class="label-md" style="font-size: 0.6rem; text-transform: uppercase;">Rotation E.Y.Z</div>
+                            <div style="font-size: 2rem; font-family: 'Space Grotesk';">12.4, -4.2, 0.8</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-primary" style="flex: 1; gap: 1rem;">
+                            <div style="width: 12px; height: 12px; background: #fff; border-radius: 50%;"></div> Start Recording
+                        </button>
+                        <button class="btn btn-secondary"><i class="fa-solid fa-rotate"></i> Sync</button>
+                    </div>
+                </div>
+                
+                <!-- Session Logs -->
+                <div class="layer-2" style="height: 200px; border-radius: 1.5rem; padding: 2rem; border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="label-md" style="font-size: 0.6rem; text-transform: uppercase; margin-bottom: 1rem;"><i class="fa-solid fa-list"></i> Session Logs</div>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                            <span style="color: var(--on-surface-variant);">Calibrated T-Pose</span>
+                            <span style="color: #00FFB2; background: rgba(0,255,178,0.1); padding: 0.1rem 0.5rem; border-radius: 4px;">SUCCESS</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                            <span style="color: var(--on-surface-variant);">Rig Mapping Complete</span>
+                            <span style="color: #00FFB2; background: rgba(0,255,178,0.1); padding: 0.1rem 0.5rem; border-radius: 4px;">SUCCESS</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                            <span style="color: var(--on-surface-variant);">Lighting Bake</span>
+                            <span style="color: #ffb800; background: rgba(255,184,0,0.1); padding: 0.1rem 0.5rem; border-radius: 4px;">PENDING</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding: 1rem 2rem; background: var(--surface-container-lowest); font-size: 0.65rem; color: var(--on-surface-variant); display: flex; justify-content: space-between; border-top: 1px solid var(--outline-variant);">
+            <div>SYSTEM STATUS: <span style="color: #00FFB2;">ONLINE</span> | LATENCY: 12ms | SHORTCUTS: (CTRL+K)</div>
+            <div>© 2024 POSESTUDIO KINETIC ENGINE</div>
         </div>
     </div>
-    
+
+    <!-- Browser-Native Logic -->
+    <script src="/static/app.js"></script>
     <script>
-        let statusElement = document.getElementById('status');
-        let launchBtn = document.getElementById('launchBtn');
-        let launchCount = 0;
+        // Trigger initialization through the native app.js
+        const launchBtn = document.getElementById('launchActionBtn');
         
         async function launchApp() {
             launchBtn.disabled = true;
-            statusElement.textContent = '';
-            statusElement.className = 'status loading';
-            statusElement.innerHTML = '<span class="loading-spinner"></span>Launching Pose Animator...';
+            launchBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Initializing AI Engine...';
             
             try {
-                const response = await fetch('/launch');
-                const data = await response.json();
+                // Initialize PoseStudio Engine (app.js)
+                const success = await window.PoseStudio.init();
                 
-                if (data.ok && data.redirect) {
-                    // Redirect to web version in same window
-                    window.location.href = data.redirect;
-                } else if (data.ok) {
-                    statusElement.className = 'status';
-                    statusElement.textContent = '✓ ' + (data.message || 'Opening web version...');
-                    checkStatus();
+                if (success) {
+                    document.getElementById('studio-view').style.display = 'flex';
+                    setTimeout(() => document.getElementById('studio-view').classList.add('active'), 10);
+                    document.getElementById('cameraPrompt').style.display = 'none';
                 } else {
-                    statusElement.className = 'status error';
-                    statusElement.textContent = '✗ Error: ' + (data.error || 'Failed to launch');
+                    alert('Browser AI Initialization failed. Please check your camera permissions.');
                     launchBtn.disabled = false;
+                    launchBtn.textContent = 'Start Now';
                 }
             } catch (error) {
-                statusElement.className = 'status error';
-                statusElement.textContent = '✗ Connection error: ' + error.message;
+                console.error('Logic Error:', error);
                 launchBtn.disabled = false;
+                launchBtn.textContent = 'Start Now';
             }
         }
-        
-        async function checkStatus() {
-            try {
-                const response = await fetch('/status');
-                const data = await response.json();
-                const indicator = document.getElementById('statusIndicator');
-                
-                if (data.running) {
-                    if (!indicator) {
-                        const statusText = statusElement.textContent;
-                        statusElement.innerHTML = '<span class="status-indicator running"></span>' + statusText;
-                    } else {
-                        indicator.className = 'status-indicator running';
-                    }
-                } else {
-                    if (!indicator) {
-                        const statusText = statusElement.textContent;
-                        statusElement.innerHTML = '<span class="status-indicator stopped"></span>' + statusText;
-                    } else {
-                        indicator.className = 'status-indicator stopped';
-                    }
-                }
-            } catch (error) {
-                // Silent fail for status check
-            }
+
+        function resetLauncher() {
+            if (!confirm('Terminate session?')) return;
+            window.PoseStudio.stop();
+            document.getElementById('studio-view').classList.remove('active');
+            setTimeout(() => document.getElementById('studio-view').style.display = 'none', 500);
+            launchBtn.disabled = false;
+            launchBtn.textContent = 'Start Now';
         }
-        
-        // Auto-launch on page load (only once)
-        window.addEventListener('DOMContentLoaded', () => {
-            // Check if auto-launch is disabled via URL parameter
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('auto') === '0') {
-                return;
-            }
-            
-            // Auto-launch after a short delay
-            setTimeout(() => {
-                if (launchCount === 0) {
-                    launchCount++;
-                    launchApp();
-                }
-            }, 1000);
-        });
-        
-        // Check status every 3 seconds
-        setInterval(checkStatus, 3000);
     </script>
 </body>
 </html>
