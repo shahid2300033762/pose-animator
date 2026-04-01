@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_BASE from '../config.js';
 
 const SignUpPage = ({ onHome, onSignIn, onRegister }) => {
     const [name, setName] = useState('');
@@ -20,7 +21,7 @@ const SignUpPage = ({ onHome, onSignIn, onRegister }) => {
         setError('');
 
         try {
-            const response = await fetch('/api/register', {
+            const response = await fetch(`${API_BASE}/api/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password }),
@@ -32,7 +33,7 @@ const SignUpPage = ({ onHome, onSignIn, onRegister }) => {
                 console.log('Registration successful:', data);
                 onRegister(data.user); // Successfully registered with user data
             } else {
-                setError(data.message || 'Registration failed');
+                setError(data.message + (data.error ? ` - ${data.error}` : ''));
             }
         } catch (err) {
             console.error('Connection Error:', err);

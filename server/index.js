@@ -12,16 +12,36 @@ app.use(cors());
 app.use(express.json());
 
 // Database Connection
-const db = mysql.createConnection({
+let connectionConfig = {
   host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT || '3306'),
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-});
+  database: process.env.DB_NAME,
+  ssl: { rejectUnauthorized: false }
+};
+
+if (process.env.DATABASE_URL) {
+  try {
+    const parsedUrl = new URL(process.env.DATABASE_URL);
+    connectionConfig = {
+      host: parsedUrl.hostname,
+      port: parsedUrl.port ? parseInt(parsedUrl.port) : 3306,
+      user: parsedUrl.username,
+      password: parsedUrl.password,
+      database: parsedUrl.pathname.replace(/^\//, ''),
+      ssl: { rejectUnauthorized: false }
+    };
+  } catch (err) {
+    console.warn('Could not parse DATABASE_URL, falling back to individual variables');
+  }
+}
+
+const db = mysql.createConnection(connectionConfig);
 
 db.connect((err) => {
   if (err) {
-    console.error('MySQL Connection Error:', err.message);
+    console.error('MySQL Connection Error (Full):', err);
     return;
   }
   console.log('Connected to MySQL Database: ' + process.env.DB_NAME);

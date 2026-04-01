@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_BASE from '../config.js';
 
 const DashboardPage = ({ user, onNewProject, onOpenStudio, onHome }) => {
     const userName = user?.name || 'Creator';
@@ -9,13 +10,13 @@ const DashboardPage = ({ user, onNewProject, onOpenStudio, onHome }) => {
         const fetchData = async () => {
             try {
                 // Fetch Projects
-                const projectsResponse = await fetch('/api/projects');
+                const projectsResponse = await fetch(`${API_BASE}/api/projects`);
                 const projectsData = await projectsResponse.json();
                 setProjects(projectsData);
 
                 // Fetch User Stats
                 if (user?.id) {
-                    const statsResponse = await fetch(`/api/stats?userId=${user.id}`);
+                    const statsResponse = await fetch(`${API_BASE}/api/stats?userId=${user.id}`);
                     const statsData = await statsResponse.json();
                     setStats(statsData);
                 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Pose, POSE_CONNECTIONS } from '@mediapipe/pose';
 import { Camera } from '@mediapipe/camera_utils';
+import API_BASE from '../config.js';
 
 const StudioPage = ({ onBack, onHome, user }) => {
     const videoRef = useRef(null);
@@ -98,7 +99,7 @@ const StudioPage = ({ onBack, onHome, user }) => {
             const delta = frameCount - lastSyncedFrameRef.current;
             if (delta > 0 && user?.id) {
                 try {
-                    await fetch('/api/stats', {
+                    await fetch(`${API_BASE}/api/stats`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ userId: user.id, delta })

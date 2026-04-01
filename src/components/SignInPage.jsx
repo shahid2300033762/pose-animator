@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_BASE from '../config.js';
 
 const SignInPage = ({ onHome, onLogin, onSignUp }) => {
     const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ const SignInPage = ({ onHome, onLogin, onSignUp }) => {
         setError('');
 
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch(`${API_BASE}/api/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -24,7 +25,7 @@ const SignInPage = ({ onHome, onLogin, onSignUp }) => {
                 console.log('Login successful:', data);
                 onLogin(data.user); // Pass user data back to App state
             } else {
-                setError(data.message || 'Invalid Credentials');
+                setError(data.message + (data.error ? ` - ${data.error}` : ''));
             }
         } catch (err) {
             console.error('Connection Error:', err);
