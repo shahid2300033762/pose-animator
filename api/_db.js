@@ -4,7 +4,12 @@ let pool;
 export default function getPool() {
   if (!pool) {
     if (process.env.DATABASE_URL) {
-      pool = mysql.createPool(process.env.DATABASE_URL);
+      pool = mysql.createPool({
+        uri: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: false },
+        waitForConnections: true,
+        connectionLimit: 5
+      });
     } else {
       pool = mysql.createPool({
         host: process.env.DB_HOST,
