@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Pose, POSE_CONNECTIONS } from '@mediapipe/pose';
-import { Camera } from '@mediapipe/camera_utils';
 import API_BASE from '../config.js';
+
+// Access MediaPipe from global window object (loaded via CDN in index.html)
+const Pose = window.Pose;
+const POSE_CONNECTIONS = window.POSE_CONNECTIONS;
+const Camera = window.Camera;
 
 const StudioPage = ({ onBack, onHome, user }) => {
     const videoRef = useRef(null);
